@@ -1,0 +1,24 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Delete filesystems marked for deletion
+  community.general.filesystem:
+    dev: "/dev/{{ item.0.vgname }}/{{ item.1.lvname }}"
+    state: "{{ item.1.fs.state }}"
+  with_subelements:
+    - "{{ lvm_vgs }}"
+    - lvm_lvs
+  loop_control:
+    label: >
+           "DEV: /dev/{{ item.0.vgname }}/{{ item.1.lvname }} |
+            FSTYPE: {{ item.1.fs.type | default('not defined') }} |
+            STATE: {{ item.1.fs.state | default('not defined') }}"
+  when:
+    - item.1.fs is defined
+    - item.1.fs.state is defined
+    - item.1.fs.state == "absent"
+    - item.1.fs.force is defined
+    - item.1.fs.force | bool
+  tags:
+    - lvm-delete-filesystems

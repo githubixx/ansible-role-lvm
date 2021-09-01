@@ -1,0 +1,21 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Delete volume group(s) marked for deletion
+  community.general.lvg:
+    vg: "{{ item.vgname }}"
+    force: "{{ item.force | default('no') }}"
+    state: "{{ item.state }}"
+  loop: "{{ lvm_vgs }}"
+  loop_control:
+    label: >
+           "VG: {{ item.vgname }} |
+            STATE: {{ item.state }}"
+  when:
+    - item.state is defined
+    - item.state == "absent"
+    - item.force is defined
+    - item.force | bool
+  tags:
+    - lvm-delete-volume-groups

@@ -1,0 +1,62 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+lvm_vgs:
+  - vgname: test-vg-01
+    pvs: /dev/vdb
+    pesize: 4M
+    state: present
+    lvm_lvs:
+      - lvname: test-lv-01
+        size: 10%VG
+        state: present
+        fs:
+          type: ext4
+          state: present
+          mountpoint:
+            state: mounted
+            path:
+              name: /mnt1
+      - lvname: test-lv-02
+        size: 10%VG
+        state: present
+        fs:
+          type: ext4
+          state: present
+          mountpoint:
+            state: mounted
+            path:
+              name: /mnt2
+      - lvname: test-lv-03
+        size: 10%VG
+        state: present
+        fs:
+          type: ext4
+          opts: -L mnt3
+          state: present
+          mountpoint:
+            opts: noatime
+            state: mounted
+            src: LABEL=mnt3
+            path:
+              name: /mnt3
+              mode: '0750'
+              owner: vagrant
+              group: vagrant
+      - lvname: test-lv-04
+        size: 10%VG
+        state: present
+        fs:
+          type: xfs
+          opts: -L mnt4
+          state: present
+          mountpoint:
+            state: mounted
+            src: LABEL=mnt4
+            path:
+              name: /mnt4
+              mode: '0755'
+      - lvname: test-lv-05
+        size: 10%VG
+        state: present

@@ -1,0 +1,24 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Delete logical volumes marked for deletion
+  community.general.lvol:
+    vg: "{{ item.0.vgname }}"
+    lv: "{{ item.1.lvname }}"
+    force: "{{ item.1.force }}"
+    state: "{{ item.1.state }}"
+  with_subelements:
+    - "{{ lvm_vgs }}"
+    - lvm_lvs
+  loop_control:
+    label: >
+           "LV: {{ item.1.lvname }} |
+            STATE: {{ item.1.state }}"
+  when:
+    - item.1.state is defined
+    - item.1.state == "absent"
+    - item.1.force is defined
+    - item.1.force | bool
+  tags:
+    - lvm-delete-logical-volumes

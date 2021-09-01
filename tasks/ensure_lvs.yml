@@ -1,0 +1,27 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Ensure logical volumes
+  community.general.lvol:
+    vg: "{{ item.0.vgname }}"
+    lv: "{{ item.1.lvname }}"
+    active: "{{ item.1.active | default(omit) }}"
+    opts: "{{ item.1.opts | default(omit) }}"
+    pvs: "{{ item.1.pvs | default(omit) }}"
+    thinpool: "{{ item.1.thinpool | default(omit) }}"
+    size: "{{ item.1.size }}"
+    state: "{{ item.1.state }}"
+  with_subelements:
+    - "{{ lvm_vgs }}"
+    - lvm_lvs
+  loop_control:
+    label: >
+           "LV: {{ item.1.lvname }} |
+            SIZE: {{ item.1.size }} |
+            STATE: {{ item.1.state }}"
+  when:
+    - item.1.state is defined
+    - item.1.state == "present"
+  tags:
+    - lvm-ensure-logical-volumes

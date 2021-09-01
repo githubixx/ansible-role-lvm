@@ -1,0 +1,110 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+dependency:
+  name: galaxy
+
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+    type: libvirt
+    options:
+      memory: 192
+      cpus: 2
+
+platforms:
+  - name: test-lvm-ubuntu2004
+    box: generic/ubuntu2004
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.10
+  - name: test-lvm-ubuntu1804
+    box: generic/ubuntu1804
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.20
+  - name: test-lvm-debian10
+    box: generic/debian10
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.30
+  - name: test-lvm-fedora33
+    box: generic/fedora33
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.40
+  - name: test-lvm-fedora34
+    box: generic/fedora34
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.50
+  - name: test-lvm-centos8
+    box: generic/centos8
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.60
+  - name: test-lvm-centos7
+    box: generic/centos7
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.70
+  - name: test-lvm-arch
+    box: archlinux/archlinux
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+      - "storage :file, :type => 'qcow2', :device => 'vdc', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.80
+  - name: test-lvm-opensuse-leap
+    box: opensuse/Leap-15.2.x86_64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.90
+  - name: test-lvm-debian11
+    box: generic/debian11
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.110
+
+provisioner:
+  name: ansible
+  connection_options:
+    ansible_ssh_user: vagrant
+    ansible_become: true
+  log: true
+  lint: yamllint . && flake8 && ansible-lint
+
+scenario:
+  name: kvm
+  test_sequence:
+    - prepare
+    - converge
+
+verifier:
+  name: ansible
+  enabled: False

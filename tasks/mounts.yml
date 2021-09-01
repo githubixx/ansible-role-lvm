@@ -1,0 +1,44 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Tasks for handling mountpoints
+  block:
+    - name: Directries for mountpoints
+      ansible.builtin.file:
+        path: "{{ item.1.fs.mountpoint.path.name }}"
+        state: directory
+        mode: "{{ item.1.fs.mountpoint.path.mode | default(omit) }}"
+        owner: "{{ item.1.fs.mountpoint.path.owner | default(omit) }}"
+        group: "{{ item.1.fs.mountpoint.path.group | default(omit) }}"
+      with_subelements:
+        - "{{ lvm_vgs }}"
+        - lvm_lvs
+      loop_control:
+        label: "{{ item.1.fs.mountpoint.path.name | default('no directory') }}"
+
+    - name: Mounts
+      ansible.posix.mount:
+        src: "{{ item.1.fs.mountpoint.src | default('/dev/' + item.0.vgname + '/' + item.1.lvname) }}"
+        path: "{{ item.1.fs.mountpoint.path.name }}"
+        fstype: "{{ item.1.fs.type | default('ext4') }}"
+        opts: "{{ item.1.fs.mountpoint.opts | default(omit) }}"
+        backup: "{{ item.1.fs.mountpoint.backup | default(omit) }}"
+        dump: "{{ item.1.fs.mountpoint.dump | default(omit) }}"
+        passno: "{{ item.1.fs.mountpoint.passno | default(omit) }}"
+        fstab: "{{ item.1.fs.mountpoint.fstab | default(omit) }}"
+        state: "{{ item.1.fs.mountpoint.state }}"
+      with_subelements:
+        - "{{ lvm_vgs }}"
+        - lvm_lvs
+      loop_control:
+        label: >
+               "{{ item.1.fs.mountpoint.src |
+                default('/dev/' + item.0.vgname + '/' + item.1.lvname) }} -> {{ item.1.fs.mountpoint.path.name |
+                default('no mount') }}: {{ item.1.fs.mountpoint.state |
+                default('no state') }}"
+  when:
+    - item.1.fs is defined
+    - item.1.fs.mountpoint is defined
+  tags:
+    - lvm-mounts

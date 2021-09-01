@@ -1,0 +1,21 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: (RedHat compatible OS) Install required packages
+  ansible.builtin.package:
+    name: "{{ packages_redhat }}"
+    state: present
+  loop:
+    - lvm2
+    - util-linux
+  loop_control:
+    loop_var: packages_redhat
+
+- name: (RedHat compatible OS) Install additional packages
+  ansible.builtin.package:
+    name: "{{ packages_redhat }}"
+    state: present
+  loop: "{{ additional_packages_redhat }}"
+  loop_control:
+    loop_var: packages_redhat

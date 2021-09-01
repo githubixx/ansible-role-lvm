@@ -1,0 +1,21 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: (Archlinux compatible OS) Install required packages
+  community.general.pacman:
+    name: "{{ packages_arch }}"
+    state: present
+  loop:
+    - lvm2
+    - util-linux
+  loop_control:
+    loop_var: packages_arch
+
+- name: (Archlinux compatible OS) Install additional packages
+  community.general.pacman:
+    name: "{{ packages_arch }}"
+    state: present
+  loop: "{{ additional_packages_arch }}"
+  loop_control:
+    loop_var: packages_arch
