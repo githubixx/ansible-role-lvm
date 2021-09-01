@@ -1,0 +1,22 @@
+---
+# Copyright (C) 2018-2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Ensure volume group(s)
+  community.general.lvg:
+    vg: "{{ item.vgname }}"
+    vg_options: "{{ item.vg_options | default(omit) }}"
+    pvs: "{{ item.pvs }}"
+    pesize: "{{ item.pesize | default(omit) }}"
+    pv_options: "{{ item.pv_options | default(omit) }}"
+    state: "{{ item.state }}"
+  loop: "{{ lvm_vgs }}"
+  loop_control:
+    label: >
+           "VG: {{ item.vgname }} |
+            STATE: {{ item.state }}"
+  when:
+    - item.state is defined
+    - item.state == "present"
+  tags:
+    - lvm-ensure-volume-groups

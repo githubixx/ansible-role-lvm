@@ -1,0 +1,21 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: (Debian compatible OS) Install required packages
+  ansible.builtin.package:
+    name: "{{ packages_debian }}"
+    state: present
+  loop:
+    - lvm2
+    - util-linux
+  loop_control:
+    loop_var: packages_debian
+
+- name: (Debian compatible OS) Install additional packages
+  ansible.builtin.package:
+    name: "{{ packages_debian }}"
+    state: present
+  loop: "{{ additional_packages_debian }}"
+  loop_control:
+    loop_var: packages_debian

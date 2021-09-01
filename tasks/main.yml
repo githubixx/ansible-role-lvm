@@ -1,0 +1,70 @@
+---
+# Copyright (C) 2018-2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Gather instance facts
+  setup:
+
+- name: Execute OS specific tasks
+  include_tasks:
+    file: "{{ item }}"
+    apply:
+      tags:
+        - lvm-install
+  with_first_found:
+    - "setup-{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml"
+    - "setup-{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}.yml"
+    - "setup-{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}.yml"
+    - "setup-{{ ansible_distribution|lower }}.yml"
+    - "setup-{{ ansible_os_family|lower }}.yml"
+  tags:
+    - lvm-install
+
+- name: Ensure volume groups
+  include_tasks:
+    file: ensure_vgs.yml
+    apply:
+      tags:
+        - lvm-ensure-volume-groups
+
+- name: Ensure logical volumes
+  include_tasks:
+    file: ensure_lvs.yml
+    apply:
+      tags:
+        - lvm-ensure-logical-volumes
+
+- name: Ensure filesystems
+  include_tasks:
+    file: ensure_fs.yml
+    apply:
+      tags:
+        - lvm-ensure-filesystems
+
+- name: Handle mountpoints
+  include_tasks:
+    file: mounts.yml
+    apply:
+      tags:
+        - lvm-mounts
+
+- name: Delete filesystems
+  include_tasks:
+    file: delete_fs.yml
+    apply:
+      tags:
+        - lvm-delete-filesystems
+
+- name: Delete logical volumes
+  include_tasks:
+    file: delete_lvs.yml
+    apply:
+      tags:
+        - lvm-delete-logical-volumes
+
+- name: Delete volume groups
+  include_tasks:
+    file: delete_vgs.yml
+    apply:
+      tags:
+        - lvm-delete-volume-groups
