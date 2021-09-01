@@ -220,30 +220,30 @@ additional_packages_arch:
 
 In general most options of the following modules are supported:
 
-[community.general.lvg](https://docs.ansible.com/ansible/latest/collections/community/general/lvg_module.html)
-[community.general.lvol](https://docs.ansible.com/ansible/latest/collections/community/general/lvol_module.html)
-[community.general.filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)
-[ansible.posix.mount](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)
+[community.general.lvg](https://docs.ansible.com/ansible/latest/collections/community/general/lvg_module.html)  
+[community.general.lvol](https://docs.ansible.com/ansible/latest/collections/community/general/lvol_module.html)  
+[community.general.filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)  
+[ansible.posix.mount](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)  
 
 Dependencies
 ------------
 
 This role depends on a few Ansible modules:
 
-[community.general.lvg](https://docs.ansible.com/ansible/latest/collections/community/general/lvg_module.html)
-[community.general.lvol](https://docs.ansible.com/ansible/latest/collections/community/general/lvol_module.html)
-[community.general.filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)
-[ansible.posix.mount](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)
+[community.general.lvg](https://docs.ansible.com/ansible/latest/collections/community/general/lvg_module.html)  
+[community.general.lvol](https://docs.ansible.com/ansible/latest/collections/community/general/lvol_module.html)  
+[community.general.filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)  
+[ansible.posix.mount](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)  
 
 TODO
 ----
 
 Currently the following features are not implemented:
 
-[] Volume Group resize
-[] Logical Volume resize/shrink
-[] Logical Volume snapshot
-[] Logical Volume/Filesystem resize
+[] Volume Group resize  
+[] Logical Volume resize/shrink  
+[] Logical Volume snapshot  
+[] Logical Volume/Filesystem resize  
 
 Example Playbook
 ----------------
