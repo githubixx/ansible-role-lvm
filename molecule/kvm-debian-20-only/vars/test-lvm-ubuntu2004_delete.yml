@@ -1,0 +1,48 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+lvm_vgs:
+  - vgname: test-vg-01
+    pvs: /dev/vdb
+    state: absent
+    force: true
+  - vgname: test-vg-02
+    pvs: /dev/vdc
+    state: absent
+    force: true
+    lvm_lvs:
+      - lvname: test-lv-02
+        size: 10%VG
+        state: absent
+        force: true
+  - vgname: test-vg-03
+    pvs: /dev/vdd
+    state: absent
+    force: true
+    lvm_lvs:
+      - lvname: test-lv-03
+        size: 10%VG
+        state: absent
+        force: true
+        fs:
+          type: ext4
+          state: absent
+          force: true
+  - vgname: test-vg-04
+    pvs: /dev/vde
+    state: absent
+    force: true
+    lvm_lvs:
+      - lvname: test-lv-04
+        size: 10%VG
+        state: absent
+        force: true
+        fs:
+          type: ext4
+          state: absent
+          force: true
+          mountpoint:
+            state: unmounted
+            path:
+              name: /mnt1
