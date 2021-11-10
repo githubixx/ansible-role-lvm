@@ -8,9 +8,7 @@
     lv: "{{ item.1.lvname }}"
     force: "{{ item.1.force }}"
     state: "{{ item.1.state }}"
-  with_subelements:
-    - "{{ lvm_vgs }}"
-    - lvm_lvs
+  loop: "{{ q('subelements', lvm_vgs, 'lvm_lvs', {'skip_missing': True}) }}"
   loop_control:
     label: >
            "LV: {{ item.1.lvname }} |

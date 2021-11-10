@@ -6,9 +6,7 @@
   community.general.filesystem:
     dev: "/dev/{{ item.0.vgname }}/{{ item.1.lvname }}"
     state: "{{ item.1.fs.state }}"
-  with_subelements:
-    - "{{ lvm_vgs }}"
-    - lvm_lvs
+  loop: "{{ q('subelements', lvm_vgs, 'lvm_lvs', {'skip_missing': True}) }}"
   loop_control:
     label: >
            "DEV: /dev/{{ item.0.vgname }}/{{ item.1.lvname }} |
