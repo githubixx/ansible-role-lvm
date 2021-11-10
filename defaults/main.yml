@@ -15,7 +15,7 @@ lvm_vgs: []
 
 
 # As previous example but also create a logical volume "test-lv-01"
-# and allocate 10% of the available VG space. 
+# and allocate 10% of the available VG space.
 #
 # lvm_vgs:
 #   - vgname: test-vg-01
@@ -108,7 +108,7 @@ lvm_vgs: []
 # can add whatever packages you want to install to the list.
 #
 # By default only tools needed for "ext(2|3|4)" or "xfs" are installed.
-# For other filesystems you may need "btrfsprogs/btrfs-progs" or 
+# For other filesystems you may need "btrfsprogs/btrfs-progs" or
 # "dosfstools" e.g.
 #
 
