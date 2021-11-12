@@ -267,6 +267,11 @@ Example 2 (assign tag to role):
       tags: role-lvm
 ```
 
+More examples
+-------------
+
+There are a few more examples used for testing this role. See [molecule](https://github.com/githubixx/ansible-role-lvm/tree/master/molecule) directories.
+
 Testing
 -------
 
