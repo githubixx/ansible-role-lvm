@@ -1,0 +1,17 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+lvm_vgs:
+  - vgname: vg01
+    pvs: /dev/vdb,/dev/vdc
+    state: present
+    lvm_lvs:
+      - lvname: lv_mirror
+        size: 100M
+        state: present
+        opts: --type raid1
+        fs:
+          type: ext4
+          opts: -L lv_mirror
+          state: present
