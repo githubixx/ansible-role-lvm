@@ -1,0 +1,14 @@
+---
+# Copyright (C) 2021 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- hosts: test-lvm-ubuntu2004
+  vars_files:
+    - vars/test-lvm-ubuntu2004_create.yml 
+  remote_user: vagrant
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Include LVM role
+      include_role:
+        name: githubixx.lvm

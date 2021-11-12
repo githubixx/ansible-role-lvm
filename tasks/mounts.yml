@@ -11,9 +11,7 @@
         mode: "{{ item.1.fs.mountpoint.path.mode | default(omit) }}"
         owner: "{{ item.1.fs.mountpoint.path.owner | default(omit) }}"
         group: "{{ item.1.fs.mountpoint.path.group | default(omit) }}"
-      with_subelements:
-        - "{{ lvm_vgs }}"
-        - lvm_lvs
+      loop: "{{ q('subelements', lvm_vgs, 'lvm_lvs', {'skip_missing': True}) }}"
       loop_control:
         label: "{{ item.1.fs.mountpoint.path.name | default('no directory') }}"
 
@@ -28,9 +26,7 @@
         passno: "{{ item.1.fs.mountpoint.passno | default(omit) }}"
         fstab: "{{ item.1.fs.mountpoint.fstab | default(omit) }}"
         state: "{{ item.1.fs.mountpoint.state }}"
-      with_subelements:
-        - "{{ lvm_vgs }}"
-        - lvm_lvs
+      loop: "{{ q('subelements', lvm_vgs, 'lvm_lvs', {'skip_missing': True}) }}"
       loop_control:
         label: >
                "{{ item.1.fs.mountpoint.src |
