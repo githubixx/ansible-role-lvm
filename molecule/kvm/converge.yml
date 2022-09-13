@@ -2,34 +2,20 @@
 # Copyright (C) 2021-2022 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- hosts: all
+- hosts: test-lvm-ubuntu2204
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
   tasks:
-    - block:
-      - name: (Archlinux) Init pacman
-        raw: |
-          pacman-key --init
-          pacman-key --populate archlinux
-        changed_when: false
-        ignore_errors: true
-
-      - name: (Archlinux) Update pacman cache
-        community.general.pacman:
-          update_cache: yes
-        changed_when: false
-      when: ansible_distribution|lower == 'archlinux'
-
-    - name: (Ubuntu) Update APT package cache
-      apt:
-        update_cache: "true"
-        cache_valid_time: 3600
-      when: ansible_distribution|lower == 'ubuntu'
+    - name: Include LVM role
+      include_role:
+        name: githubixx.lvm
 
 - hosts: test-lvm-ubuntu2004
   vars_files:
-    - vars/test-lvm-ubuntu2004_create.yml 
+    - vars/test-lvm-ubuntu2004_create.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -39,6 +25,8 @@
         name: githubixx.lvm
 
 - hosts: test-lvm-ubuntu1804
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -48,6 +36,8 @@
         name: githubixx.lvm
 
 - hosts: test-lvm-debian10
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -56,7 +46,9 @@
       include_role:
         name: githubixx.lvm
 
-- hosts: test-lvm-fedora33
+- hosts: test-lvm-fedora35
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -65,16 +57,9 @@
       include_role:
         name: githubixx.lvm
 
-- hosts: test-lvm-fedora34
-  remote_user: vagrant
-  become: true
-  gather_facts: true
-  tasks:
-    - name: Include LVM role
-      include_role:
-        name: githubixx.lvm
-
-- hosts: test-lvm-centos8
+- hosts: test-lvm-fedora36
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -84,6 +69,8 @@
         name: githubixx.lvm
 
 - hosts: test-lvm-centos7
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -114,7 +101,20 @@
       include_role:
         name: githubixx.lvm
 
-- hosts: test-lvm-opensuse-leap
+- hosts: test-lvm-opensuse-leap-15-3
+  vars_files:
+    - vars/test-lvm-minimal.yml
+  remote_user: vagrant
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Include LVM role
+      include_role:
+        name: githubixx.lvm
+
+- hosts: test-lvm-opensuse-leap-15-4
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -124,6 +124,8 @@
         name: githubixx.lvm
 
 - hosts: test-lvm-debian11
+  vars_files:
+    - vars/test-lvm-minimal.yml
   remote_user: vagrant
   become: true
   gather_facts: true
