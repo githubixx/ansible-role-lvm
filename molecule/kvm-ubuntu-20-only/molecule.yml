@@ -10,13 +10,12 @@ driver:
   provider:
     name: libvirt
     type: libvirt
-    options:
-      memory: 192
-      cpus: 2
 
 platforms:
   - name: test-lvm-ubuntu2004
     box: generic/ubuntu2004
+    memory: 1024
+    cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
       - "storage :file, :type => 'qcow2', :device => 'vdc', :size => '1G'"
@@ -37,11 +36,11 @@ provisioner:
   lint: yamllint . && flake8 && ansible-lint
 
 scenario:
-  name: kvm-vg-only
+  name: kvm-ubuntu-20-only
   test_sequence:
     - prepare
     - converge
 
 verifier:
   name: ansible
-  enabled: False
+  enabled: false

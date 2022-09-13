@@ -4,7 +4,7 @@
 
 - hosts: test-lvm-ubuntu2004
   vars_files:
-    - vars/test-lvm-ubuntu2004_create.yml 
+    - vars/test-lvm-ubuntu2004_create.yml
   remote_user: vagrant
   become: true
   gather_facts: true
