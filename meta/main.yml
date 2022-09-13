@@ -15,6 +15,7 @@ galaxy_info:
       versions:
         - "bionic"
         - "focal"
+        - "jammy"
     - name: Debian
       versions:
         - "buster"
@@ -25,11 +26,12 @@ galaxy_info:
         - "8"
     - name: Fedora
       versions:
-        - "33"
-        - "34"
+        - "35"
+        - "36"
     - name: opensuse
       versions:
-        - "15.2"
+        - "15.3"
+        - "15.4"
   galaxy_tags:
     - linux
     - lvm
