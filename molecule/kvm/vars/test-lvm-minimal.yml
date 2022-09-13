@@ -5,7 +5,7 @@
 lvm_vgs:
   - vgname: vg01
     pvs: /dev/vdb
-    pesize: 128K
+    pesize: 2M
     state: present
     lvm_lvs:
       - lvname: vg01lv01
@@ -20,31 +20,11 @@ lvm_vgs:
               name: /vg01lv01
       - lvname: vg01lv02
         size: 10%VG
-        state: absent
-        force: true
+        state: present
         fs:
           type: ext4
-          state: absent
-          force: true
+          state: present
           mountpoint:
-            state: absent
+            state: mounted
             path:
               name: /vg01lv02
-  - vgname: vg02
-    pvs: /dev/vdc
-    pesize: 512K
-    state: absent
-    force: true
-    lvm_lvs:
-      - lvname: vg02lv01
-        size: 10%VG
-        state: absent
-        force: true
-        fs:
-          type: ext4
-          state: absent
-          force: true
-          mountpoint:
-            state: absent
-            path:
-              name: /vg02lv01

@@ -1,5 +1,5 @@
 ---
-# Copyright (C) 2021 Robert Wimmer
+# Copyright (C) 2021-2022 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 dependency:
@@ -10,13 +10,12 @@ driver:
   provider:
     name: libvirt
     type: libvirt
-    options:
-      memory: 192
-      cpus: 2
 
 platforms:
-  - name: test-lvm-ubuntu2004
-    box: generic/ubuntu2004
+  - name: test-lvm-ubuntu2204
+    box: generic/ubuntu2204
+    memory: 1024
+    cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
@@ -24,36 +23,56 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.10
-  - name: test-lvm-ubuntu1804
-    box: generic/ubuntu1804
+  - name: test-lvm-ubuntu2004
+    box: generic/ubuntu2004
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.10.20
-  - name: test-lvm-debian10
-    box: generic/debian10
+  - name: test-lvm-ubuntu1804
+    box: generic/ubuntu1804
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.10.30
-  - name: test-lvm-fedora33
-    box: generic/fedora33
+  - name: test-lvm-debian10
+    box: generic/debian10
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.10.40
-  - name: test-lvm-fedora34
-    box: generic/fedora34
+  - name: test-lvm-fedora35
+    box: generic/fedora35
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.10.50
-  - name: test-lvm-centos8
-    box: generic/centos8
+  - name: test-lvm-fedora36
+    box: generic/fedora36
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
@@ -61,6 +80,10 @@ platforms:
         ip: 192.168.10.60
   - name: test-lvm-centos7
     box: generic/centos7
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
@@ -68,6 +91,8 @@ platforms:
         ip: 192.168.10.70
   - name: test-lvm-arch
     box: archlinux/archlinux
+    memory: 1024
+    cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
       - "storage :file, :type => 'qcow2', :device => 'vdc', :size => '1G'"
@@ -76,15 +101,34 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.80
-  - name: test-lvm-opensuse-leap
-    box: opensuse/Leap-15.2.x86_64
+  - name: test-lvm-opensuse-leap-15-3
+    box: opensuse/Leap-15.3.x86_64
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
         type: static
         ip: 192.168.10.90
+  - name: test-lvm-opensuse-leap-15-4
+    box: opensuse/Leap-15.4.x86_64
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.100
   - name: test-lvm-debian11
     box: generic/debian11
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
     interfaces:
       - auto_config: true
         network_name: private_network
@@ -107,4 +151,4 @@ scenario:
 
 verifier:
   name: ansible
-  enabled: False
+  enabled: false
