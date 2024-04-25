@@ -14,7 +14,7 @@ driver:
 platforms:
   - name: test-lvm-ubuntu2004
     box: generic/ubuntu2004
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -25,7 +25,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.10
+        ip: 172.16.10.10
 
 provisioner:
   name: ansible
