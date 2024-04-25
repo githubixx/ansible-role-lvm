@@ -3,18 +3,15 @@ Copyright (C) 2021-2022 Robert Wimmer
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
-ansible-role-lvm
-================
+# ansible-role-lvm
 
 This Ansible roles installs Linux Logical Volume Manager (LVM) resources like `Volume Groups` (VG), `Logical Volumes` (LV) and handles `filesystems` creation and `mountpoints`.
 
-Changelog
----------
+## Changelog
 
 see [CHANGELOG](https://github.com/githubixx/ansible-role-lvm/blob/master/CHANGELOG.md)
 
-Role Variables
---------------
+## Role Variables
 
 By default no LVM resources are created. See examples below. The `lvm_vgs` key is the entrypoint for all LVM resources that should be created.
 
@@ -170,9 +167,9 @@ mountpoint:
     name: /vg01lv01
 ```
 
-This of course only works if the mountpoint isn't used by a programm or service.
+This of course only works if the mountpoint isn't used by a program or service.
 
-As deleting filesystems, logical volumes (LV) and volume groups (VG) potentially can destroy your data extra caution should be taken! In this case specifing `state: absent` to delete such a resource isn't enough. `force: true` is also needed. Of course deleting a volume group that still contains a logical volume will fail. Also deleting a logical volume with a filesystem with `state: present` will fail.
+As deleting filesystems, logical volumes (LV) and volume groups (VG) potentially can destroy your data extra caution should be taken! In this case specifying `state: absent` to delete such a resource isn't enough. `force: true` is also needed. Of course deleting a volume group that still contains a logical volume will fail. Also deleting a logical volume with a filesystem with `state: present` will fail.
 
 The following example will unmount the specified mountpoint (`/vg02lv01`) and delete its entry from `/etc/fstab`, will wipe the `ext4`  filesystem, deletes the logical volume (`vg02lv01`) and finally deletes the volume group (`vg02`) (in that order):
 
@@ -230,8 +227,7 @@ In general most options of the following modules are supported:
 [community.general.filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)  
 [ansible.posix.mount](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)  
 
-Dependencies
-------------
+## Dependencies
 
 This role depends on a few Ansible modules:
 
@@ -240,20 +236,18 @@ This role depends on a few Ansible modules:
 [community.general.filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)  
 [ansible.posix.mount](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)  
 
-TODO
-----
+## TODO
 
 Currently the following features are not implemented:
 
-[] Volume Group resize  
-[] Logical Volume resize/shrink  
-[] Logical Volume snapshot  
-[] Logical Volume/Filesystem resize  
+- Volume Group resize  
+- Logical Volume shrink  
+- Logical Volume snapshot  
+- Logical Volume/Filesystem resize  
 
-Example Playbook
-----------------
+## Example Playbook
 
-Example 1 (without role tag):
+### Example 1 (without role tag)
 
 ```yaml
 - hosts: your-host
@@ -261,7 +255,7 @@ Example 1 (without role tag):
     - githubixx.lvm
 ```
 
-Example 2 (assign tag to role):
+### Example 2 (assign tag to role)
 
 ```yaml
 -
@@ -272,13 +266,11 @@ Example 2 (assign tag to role):
       tags: role-lvm
 ```
 
-More examples
--------------
+## More examples
 
 There are a few more examples used for testing this role. See [molecule](https://github.com/githubixx/ansible-role-lvm/tree/master/molecule) directories.
 
-Testing
--------
+## Testing
 
 This role has a small test setup that is created using [Molecule](https://github.com/ansible-community/molecule), libvirt (vagrant-libvirt) and QEMU/KVM. Please see my blog post [Testing Ansible roles with Molecule, libvirt (vagrant-libvirt) and QEMU/KVM](https://www.tauceti.blog/posts/testing-ansible-roles-with-molecule-libvirt-vagrant-qemu-kvm/) how to setup. The test configuration is [here](https://github.com/githubixx/ansible-role-lvm/tree/master/molecule/kvm).
 
@@ -296,12 +288,10 @@ To clean up run
 molecule destroy -s kvm
 ```
 
-License
--------
+## License
 
 [GNU General Public License v3.0 or later](https://spdx.org/licenses/GPL-3.0-or-later.html)
 
-Author Information
-------------------
+## Author Information
 
 [http://www.tauceti.blog](http://www.tauceti.blog)
