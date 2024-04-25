@@ -68,8 +68,8 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.80
-  - name: test-lvm-opensuse-leap-15-3
-    box: opensuse/Leap-15.3.x86_64
+  - name: test-lvm-opensuse-leap-15-4
+    box: opensuse/Leap-15.4.x86_64
     memory: 1024
     cpus: 2
     provider_raw_config_args:
@@ -79,8 +79,8 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.90
-  - name: test-lvm-opensuse-leap-15-4
-    box: opensuse/Leap-15.4.x86_64
+  - name: test-lvm-opensuse-leap-15-5
+    box: opensuse/Leap-15.5.x86_64
     memory: 1024
     cpus: 2
     provider_raw_config_args:

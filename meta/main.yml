@@ -27,7 +27,8 @@ galaxy_info:
         - "39"
     - name: opensuse
       versions:
-        - "15.3"
+        - "15.4"
+        - "15.5"
   galaxy_tags:
     - linux
     - lvm

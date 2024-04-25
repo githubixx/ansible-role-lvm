@@ -6,7 +6,10 @@
 - remove support for Ubuntu 18.04 (reached EOL)
 - remove support for Debian 10 (reached EOL)
 - remove support for Fedora 35/36 (reached EOL)
+- remove support for openSUSE Leap 15.3 (reached EOL)
 - add support for Fedora 39
+- add support for openSUSE Leap 15.4
+- add support for openSUSE Leap 15.5
 
 ## 0.3.0
 
