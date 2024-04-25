@@ -1,8 +1,9 @@
 ---
-# Copyright (C) 2021-2022 Robert Wimmer
+# Copyright (C) 2021-2024 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- hosts: test-lvm-ubuntu2004
+- name: Include LVM role
+  hosts: test-lvm-ubuntu2004
   vars_files:
     - vars/test-lvm-ubuntu2004_create.yml
   remote_user: vagrant
@@ -10,10 +11,11 @@
   gather_facts: true
   tasks:
     - name: Include LVM role
-      include_role:
+      ansible.builtin.include_role:
         name: githubixx.lvm
 
-- hosts: test-lvm-ubuntu2004
+- name: Include LVM role
+  hosts: test-lvm-ubuntu2004
   vars_files:
     - vars/test-lvm-ubuntu2004_delete.yml
   remote_user: vagrant
@@ -21,5 +23,5 @@
   gather_facts: true
   tasks:
     - name: Include LVM role
-      include_role:
+      ansible.builtin.include_role:
         name: githubixx.lvm

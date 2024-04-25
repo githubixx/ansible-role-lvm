@@ -1,5 +1,5 @@
 ---
-# Copyright (C) 2021-2022 Robert Wimmer
+# Copyright (C) 2021-2024 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 dependency:
@@ -14,7 +14,7 @@ driver:
 platforms:
   - name: test-lvm-ubuntu2204
     box: generic/ubuntu2204
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -22,10 +22,10 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.10
+        ip: 172.16.10.10
   - name: test-lvm-ubuntu2004
     box: generic/ubuntu2004
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -33,10 +33,10 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.20
-  - name: test-lvm-ubuntu1804
-    box: generic/ubuntu1804
-    memory: 1024
+        ip: 172.16.10.20
+  - name: test-lvm-fedora39
+    box: generic/fedora39
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -44,43 +44,10 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.30
-  - name: test-lvm-debian10
-    box: generic/debian10
-    memory: 1024
-    cpus: 2
-    provider_raw_config_args:
-      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.10.40
-  - name: test-lvm-fedora35
-    box: generic/fedora35
-    memory: 1024
-    cpus: 2
-    provider_raw_config_args:
-      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.10.50
-  - name: test-lvm-fedora36
-    box: generic/fedora36
-    memory: 1024
-    cpus: 2
-    provider_raw_config_args:
-      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.10.60
+        ip: 172.16.10.30
   - name: test-lvm-centos7
     box: generic/centos7
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -88,10 +55,10 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.70
+        ip: 172.16.10.40
   - name: test-lvm-arch
     box: archlinux/archlinux
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -100,21 +67,10 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.80
-  - name: test-lvm-opensuse-leap-15-3
-    box: opensuse/Leap-15.3.x86_64
-    memory: 1024
-    cpus: 2
-    provider_raw_config_args:
-      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.10.90
+        ip: 172.16.10.50
   - name: test-lvm-opensuse-leap-15-4
     box: opensuse/Leap-15.4.x86_64
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -122,10 +78,21 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.100
+        ip: 172.16.10.60
+  - name: test-lvm-opensuse-leap-15-5
+    box: opensuse/Leap-15.5.x86_64
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.70
   - name: test-lvm-debian11
     box: generic/debian11
-    memory: 1024
+    memory: 1536
     cpus: 2
     provider_raw_config_args:
       - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
@@ -133,7 +100,62 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.110
+        ip: 172.16.10.80
+  - name: test-lvm-debian12
+    box: generic/debian12
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.90
+  - name: test-lvm-rocky8
+    box: generic/rocky8
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.100
+  - name: test-lvm-rocky9
+    box: rockylinux/9
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.110
+  - name: test-lvm-alma8
+    box: almalinux/8
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.120
+  - name: test-lvm-alma9
+    box: almalinux/9
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.130
 
 provisioner:
   name: ansible
@@ -142,6 +164,10 @@ provisioner:
     ansible_become: true
   log: true
   lint: yamllint . && flake8 && ansible-lint
+  inventory:
+    host_vars:
+      test-lvm-arch:
+        ansible_python_interpreter: "/usr/bin/python3"
 
 scenario:
   name: kvm
