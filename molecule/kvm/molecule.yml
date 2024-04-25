@@ -34,17 +34,6 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.20
-  - name: test-lvm-ubuntu1804
-    box: generic/ubuntu1804
-    memory: 1024
-    cpus: 2
-    provider_raw_config_args:
-      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.10.30
   - name: test-lvm-debian10
     box: generic/debian10
     memory: 1024

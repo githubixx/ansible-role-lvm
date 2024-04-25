@@ -3,6 +3,7 @@
 ## 0.4.0
 
 - add resize filesystem `resizefs` item
+- remove support for Ubuntu 18.04 (reached EOL)
 
 ## 0.3.0
 
