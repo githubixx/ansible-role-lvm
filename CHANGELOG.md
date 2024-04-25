@@ -18,7 +18,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 - add support for openSUSE Leap 15.5
 - add support for Rocky Linux 8/9
 - add support for Almalinux 8/9
+- update Github workflow
 - Molecule: change IP addresses
+- Molecule: fix ansible-lint issues
 
 ## 0.3.0
 
