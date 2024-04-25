@@ -34,19 +34,8 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.20
-  - name: test-lvm-fedora35
-    box: generic/fedora35
-    memory: 1024
-    cpus: 2
-    provider_raw_config_args:
-      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: static
-        ip: 192.168.10.50
-  - name: test-lvm-fedora36
-    box: generic/fedora36
+  - name: test-lvm-fedora39
+    box: generic/fedora39
     memory: 1024
     cpus: 2
     provider_raw_config_args:

@@ -4,6 +4,9 @@
 
 - add resize filesystem `resizefs` item
 - remove support for Ubuntu 18.04 (reached EOL)
+- remove support for Debian 10 (reached EOL)
+- remove support for Fedora 35/36 (reached EOL)
+- add support for Fedora 39
 
 ## 0.3.0
 
