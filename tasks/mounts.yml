@@ -3,6 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Tasks for handling mountpoints
+  when:
+    - item.1.fs is defined
+    - item.1.fs.mountpoint is defined
+  tags:
+    - lvm-mounts
   block:
     - name: Directories for mountpoints
       ansible.builtin.file:
@@ -33,8 +38,3 @@
                 default('/dev/' + item.0.vgname + '/' + item.1.lvname) }} -> {{ item.1.fs.mountpoint.path.name |
                 default('no mount') }}: {{ item.1.fs.mountpoint.state |
                 default('no state') }}"
-  when:
-    - item.1.fs is defined
-    - item.1.fs.mountpoint is defined
-  tags:
-    - lvm-mounts
