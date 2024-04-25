@@ -164,6 +164,10 @@ provisioner:
     ansible_become: true
   log: true
   lint: yamllint . && flake8 && ansible-lint
+  inventory:
+    host_vars:
+      test-lvm-arch:
+        ansible_python_interpreter: "/usr/bin/python3"
 
 scenario:
   name: kvm
