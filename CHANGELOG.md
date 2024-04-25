@@ -11,6 +11,7 @@
 - add support for Debian 12
 - add support for openSUSE Leap 15.4
 - add support for openSUSE Leap 15.5
+- Molecule: change IP addresses
 
 ## 0.3.0
 

@@ -22,7 +22,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.10
+        ip: 172.16.10.10
   - name: test-lvm-ubuntu2004
     box: generic/ubuntu2004
     memory: 1024
@@ -33,7 +33,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.20
+        ip: 172.16.10.20
   - name: test-lvm-fedora39
     box: generic/fedora39
     memory: 1024
@@ -44,7 +44,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.60
+        ip: 172.16.10.30
   - name: test-lvm-centos7
     box: generic/centos7
     memory: 1024
@@ -55,7 +55,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.70
+        ip: 172.16.10.40
   - name: test-lvm-arch
     box: archlinux/archlinux
     memory: 1024
@@ -67,7 +67,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.80
+        ip: 172.16.10.50
   - name: test-lvm-opensuse-leap-15-4
     box: opensuse/Leap-15.4.x86_64
     memory: 1024
@@ -78,7 +78,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.90
+        ip: 172.16.10.60
   - name: test-lvm-opensuse-leap-15-5
     box: opensuse/Leap-15.5.x86_64
     memory: 1024
@@ -89,7 +89,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.100
+        ip: 172.16.10.70
   - name: test-lvm-debian11
     box: generic/debian11
     memory: 1024
@@ -100,7 +100,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.110
+        ip: 172.16.10.80
   - name: test-lvm-debian12
     box: generic/debian12
     memory: 1024
@@ -111,7 +111,7 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: static
-        ip: 192.168.10.120
+        ip: 172.16.10.90
 
 provisioner:
   name: ansible
