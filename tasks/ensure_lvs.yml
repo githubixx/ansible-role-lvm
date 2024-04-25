@@ -12,7 +12,7 @@
     thinpool: "{{ item.1.thinpool | default(omit) }}"
     size: "{{ item.1.size }}"
     state: "{{ item.1.state }}"
-    resizefs: "{{ item.1.resizefs }}"
+    resizefs: "{{ item.1.resizefs | default(omit) }}"
   loop: "{{ q('subelements', lvm_vgs, 'lvm_lvs', {'skip_missing': True}) }}"
   loop_control:
     label: >
