@@ -101,6 +101,17 @@ platforms:
         network_name: private_network
         type: static
         ip: 192.168.10.110
+  - name: test-lvm-debian12
+    box: generic/debian12
+    memory: 1024
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 192.168.10.120
 
 provisioner:
   name: ansible

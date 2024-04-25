@@ -8,6 +8,7 @@
 - remove support for Fedora 35/36 (reached EOL)
 - remove support for openSUSE Leap 15.3 (reached EOL)
 - add support for Fedora 39
+- add support for Debian 12
 - add support for openSUSE Leap 15.4
 - add support for openSUSE Leap 15.5
 
