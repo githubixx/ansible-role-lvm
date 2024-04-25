@@ -4,7 +4,7 @@
 
 - name: Tasks for handling mountpoints
   block:
-    - name: Directries for mountpoints
+    - name: Directories for mountpoints
       ansible.builtin.file:
         path: "{{ item.1.fs.mountpoint.path.name }}"
         state: directory
