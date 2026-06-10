@@ -1,0 +1,243 @@
+---
+# Copyright (C) 2021-2026 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Verify default fixture on minimal hosts
+  hosts: all:!test-lvm-ubuntu2404:!test-lvm-arch
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check expected volume group exists
+      ansible.builtin.command:
+        cmd: vgs --noheadings -o vg_name vg01
+      register: lvm__minimal_vg01
+      changed_when: false
+
+    - name: Check expected logical volumes exist
+      ansible.builtin.command:
+        cmd: lvs --noheadings -o lv_name vg01
+      register: lvm__minimal_vg01_lvs
+      changed_when: false
+
+    - name: Read filesystem type for minimal logical volumes
+      ansible.builtin.command:
+        cmd: blkid -s TYPE -o value /dev/vg01/{{ item }}
+      loop:
+        - vg01lv01
+        - vg01lv02
+      register: lvm__minimal_blk_type
+      changed_when: false
+
+    - name: Read mount information for minimal logical volumes
+      ansible.builtin.command:
+        cmd: findmnt -no source,target,fstype /{{ item }}
+      loop:
+        - vg01lv01
+        - vg01lv02
+      register: lvm__minimal_mounts
+      changed_when: false
+
+    - name: Gather mountpoint directory status for minimal logical volumes
+      ansible.builtin.stat:
+        path: /{{ item }}
+      loop:
+        - vg01lv01
+        - vg01lv02
+      register: lvm__minimal_mountpoint_stats
+
+    - name: Read fstab for minimal hosts
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: lvm__minimal_fstab
+
+    - name: Ensure minimal host LVM state matches expectations
+      ansible.builtin.assert:
+        that:
+          - "'vg01' in lvm__minimal_vg01.stdout"
+          - "'vg01lv01' in lvm__minimal_vg01_lvs.stdout"
+          - "'vg01lv02' in lvm__minimal_vg01_lvs.stdout"
+          - lvm__minimal_blk_type.results | map(attribute='stdout') | list == ['ext4', 'ext4']
+          - lvm__minimal_mounts.results[0].stdout is search('/vg01lv01 ext4')
+          - lvm__minimal_mounts.results[1].stdout is search('/vg01lv02 ext4')
+          - lvm__minimal_mountpoint_stats.results[0].stat.exists
+          - lvm__minimal_mountpoint_stats.results[0].stat.isdir
+          - lvm__minimal_mountpoint_stats.results[1].stat.exists
+          - lvm__minimal_mountpoint_stats.results[1].stat.isdir
+          - (lvm__minimal_fstab.content | b64decode) is search('(?m)^\S+\s+/vg01lv01\s+ext4\s+')
+          - (lvm__minimal_fstab.content | b64decode) is search('(?m)^\S+\s+/vg01lv02\s+ext4\s+')
+
+- name: Verify rich Ubuntu fixture
+  hosts: test-lvm-ubuntu2404
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check expected volume group exists
+      ansible.builtin.command:
+        cmd: vgs --noheadings -o vg_name test-vg-01
+      register: lvm__ubuntu_vg
+      changed_when: false
+
+    - name: Check expected logical volumes exist
+      ansible.builtin.command:
+        cmd: lvs --noheadings -o lv_name test-vg-01
+      register: lvm__ubuntu_lvs
+      changed_when: false
+
+    - name: Read filesystem type and label for formatted logical volumes
+      ansible.builtin.command:
+        cmd: blkid -o export /dev/test-vg-01/{{ item }}
+      loop:
+        - test-lv-01
+        - test-lv-02
+        - test-lv-03
+        - test-lv-04
+      register: lvm__ubuntu_blkid
+      changed_when: false
+
+    - name: Check unformatted logical volume has no filesystem signature
+      ansible.builtin.command:
+        cmd: blkid /dev/test-vg-01/test-lv-05
+      register: lvm__ubuntu_lv05_blkid
+      changed_when: false
+      failed_when: false
+
+    - name: Read mount information for expected Ubuntu mountpoints
+      ansible.builtin.command:
+        cmd: findmnt -no source,target,fstype,options {{ item }}
+      loop:
+        - /mnt1
+        - /mnt2
+        - /mnt3
+        - /mnt4
+      register: lvm__ubuntu_mounts
+      changed_when: false
+
+    - name: Gather mountpoint directory status for expected Ubuntu mountpoints
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop:
+        - /mnt1
+        - /mnt2
+        - /mnt3
+        - /mnt4
+      register: lvm__ubuntu_mountpoint_stats
+
+    - name: Read fstab for Ubuntu rich fixture
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: lvm__ubuntu_fstab
+
+    - name: Ensure Ubuntu rich fixture matches expectations
+      ansible.builtin.assert:
+        that:
+          - "'test-vg-01' in lvm__ubuntu_vg.stdout"
+          - "'test-lv-01' in lvm__ubuntu_lvs.stdout"
+          - "'test-lv-02' in lvm__ubuntu_lvs.stdout"
+          - "'test-lv-03' in lvm__ubuntu_lvs.stdout"
+          - "'test-lv-04' in lvm__ubuntu_lvs.stdout"
+          - "'test-lv-05' in lvm__ubuntu_lvs.stdout"
+          - lvm__ubuntu_blkid.results[0].stdout is search('TYPE=ext4')
+          - lvm__ubuntu_blkid.results[1].stdout is search('TYPE=ext4')
+          - lvm__ubuntu_blkid.results[2].stdout is search('TYPE=ext4')
+          - lvm__ubuntu_blkid.results[2].stdout is search('LABEL=mnt3')
+          - lvm__ubuntu_blkid.results[3].stdout is search('TYPE=xfs')
+          - lvm__ubuntu_blkid.results[3].stdout is search('LABEL=mnt4')
+          - lvm__ubuntu_lv05_blkid.rc != 0
+          - lvm__ubuntu_mounts.results[0].stdout is search('\\s/mnt1\\s+ext4(\\s|$)')
+          - lvm__ubuntu_mounts.results[1].stdout is search('\\s/mnt2\\s+ext4(\\s|$)')
+          - lvm__ubuntu_mounts.results[2].stdout is search('\\s/mnt3\\s+ext4(\\s|$)')
+          - lvm__ubuntu_mounts.results[2].stdout is search('noatime')
+          - lvm__ubuntu_mounts.results[3].stdout is search('\\s/mnt4\\s+xfs(\\s|$)')
+          - lvm__ubuntu_mountpoint_stats.results[0].stat.exists
+          - lvm__ubuntu_mountpoint_stats.results[1].stat.exists
+          - lvm__ubuntu_mountpoint_stats.results[2].stat.exists
+          - lvm__ubuntu_mountpoint_stats.results[2].stat.isdir
+          - lvm__ubuntu_mountpoint_stats.results[3].stat.exists
+          - lvm__ubuntu_mountpoint_stats.results[3].stat.isdir
+          - (lvm__ubuntu_fstab.content | b64decode) is search('(?m)^\S+\s+/mnt1\s+ext4\s+')
+          - (lvm__ubuntu_fstab.content | b64decode) is search('(?m)^\S+\s+/mnt2\s+ext4\s+')
+          - (lvm__ubuntu_fstab.content | b64decode) is search('(?m)^LABEL=mnt3\s+/mnt3\s+ext4\s+noatime')
+          - (lvm__ubuntu_fstab.content | b64decode) is search('(?m)^LABEL=mnt4\s+/mnt4\s+xfs\s+')
+
+- name: Verify Arch create-delete end state
+  hosts: test-lvm-arch
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check expected Arch volume group state
+      ansible.builtin.command:
+        cmd: vgs --noheadings -o vg_name
+      register: lvm__arch_vgs
+      changed_when: false
+
+    - name: Check expected Arch logical volume state
+      ansible.builtin.command:
+        cmd: lvs --noheadings -o vg_name,lv_name
+      register: lvm__arch_lvs
+      changed_when: false
+
+    - name: Read filesystem type for remaining Arch logical volume
+      ansible.builtin.command:
+        cmd: blkid -s TYPE -o value /dev/vg01/vg01lv01
+      register: lvm__arch_vg01lv01_type
+      changed_when: false
+
+    - name: Check removed Arch logical volumes have no filesystem signature
+      ansible.builtin.command:
+        cmd: blkid {{ item }}
+      loop:
+        - /dev/vg01/vg01lv02
+        - /dev/vg02/vg02lv01
+      register: lvm__arch_absent_blkid
+      changed_when: false
+      failed_when: false
+
+    - name: Read mount information for remaining Arch mountpoint
+      ansible.builtin.command:
+        cmd: findmnt -no source,target,fstype /vg01lv01
+      register: lvm__arch_mount_present
+      changed_when: false
+
+    - name: Check removed Arch mountpoints are absent
+      ansible.builtin.command:
+        cmd: findmnt -no source,target,fstype {{ item }}
+      loop:
+        - /vg01lv02
+        - /vg02lv01
+      register: lvm__arch_mount_absent
+      changed_when: false
+      failed_when: false
+
+    - name: Gather Arch mountpoint directory status
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop:
+        - /vg01lv01
+        - /vg01lv02
+        - /vg02lv01
+      register: lvm__arch_mountpoint_stats
+
+    - name: Read Arch fstab
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: lvm__arch_fstab
+
+    - name: Ensure Arch end state matches expectations
+      ansible.builtin.assert:
+        that:
+          - "'vg01' in lvm__arch_vgs.stdout"
+          - "'vg02' not in lvm__arch_vgs.stdout"
+          - "'vg01 vg01lv01' in lvm__arch_lvs.stdout"
+          - "'vg01 vg01lv02' not in lvm__arch_lvs.stdout"
+          - "'vg02 vg02lv01' not in lvm__arch_lvs.stdout"
+          - lvm__arch_vg01lv01_type.stdout == 'ext4'
+          - lvm__arch_absent_blkid.results[0].rc != 0
+          - lvm__arch_absent_blkid.results[1].rc != 0
+          - lvm__arch_mount_present.stdout is search('/vg01lv01 ext4')
+          - lvm__arch_mount_absent.results[0].rc != 0
+          - lvm__arch_mount_absent.results[1].rc != 0
+          - lvm__arch_mountpoint_stats.results[0].stat.exists
+          - lvm__arch_mountpoint_stats.results[0].stat.isdir
+          - (lvm__arch_fstab.content | b64decode) is search('(?m)^\S+\s+/vg01lv01\s+ext4\s+')
+          - (lvm__arch_fstab.content | b64decode) is not search('(?m)^\S+\s+/vg01lv02\s+ext4\s+')
+          - (lvm__arch_fstab.content | b64decode) is not search('(?m)^\S+\s+/vg02lv01\s+ext4\s+')
