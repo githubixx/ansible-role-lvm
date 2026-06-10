@@ -1,0 +1,58 @@
+---
+# Copyright (C) 2021-2026 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Verify mirror scenario state
+  hosts: test-lvm-ubuntu2404
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check mirror volume group exists
+      ansible.builtin.command:
+        cmd: vgs --noheadings -o vg_name,pv_count vg01
+      register: lvm__mirror_vg
+      changed_when: false
+
+    - name: Check physical volumes belong to mirror volume group
+      ansible.builtin.command:
+        cmd: pvs --noheadings -o pv_name,vg_name
+      register: lvm__mirror_pvs
+      changed_when: false
+
+    - name: Check mirror logical volume exists with raid attributes
+      ansible.builtin.command:
+        cmd: lvs --noheadings -o lv_name,lv_attr vg01
+      register: lvm__mirror_lvs
+      changed_when: false
+
+    - name: Read filesystem type and label for mirror logical volume
+      ansible.builtin.command:
+        cmd: blkid -o export /dev/vg01/lv_mirror
+      register: lvm__mirror_blkid
+      changed_when: false
+
+    - name: Ensure mirror logical volume is not mounted
+      ansible.builtin.command:
+        cmd: findmnt -rn -S LABEL=lv_mirror
+      register: lvm__mirror_mount
+      changed_when: false
+      failed_when: false
+
+    - name: Read fstab for mirror scenario
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: lvm__mirror_fstab
+
+    - name: Ensure mirror scenario state matches expectations
+      ansible.builtin.assert:
+        that:
+          - lvm__mirror_vg.stdout is search('vg01')
+          - lvm__mirror_vg.stdout is search('2')
+          - lvm__mirror_pvs.stdout is search('/dev/vdb\s+vg01')
+          - lvm__mirror_pvs.stdout is search('/dev/vdc\s+vg01')
+          - lvm__mirror_lvs.stdout is search('lv_mirror')
+          - lvm__mirror_lvs.stdout is regex('(?m)^\s*lv_mirror\s+r')
+          - lvm__mirror_blkid.stdout is search('TYPE=ext4')
+          - lvm__mirror_blkid.stdout is search('LABEL=lv_mirror')
+          - lvm__mirror_mount.rc != 0
+          - (lvm__mirror_fstab.content | b64decode) is not search('lv_mirror')
