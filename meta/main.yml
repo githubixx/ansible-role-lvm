@@ -28,6 +28,7 @@ galaxy_info:
       versions:
         - "42"
         - "43"
+        - "44"
     - name: opensuse
       versions:
         - "all"
