@@ -15,8 +15,11 @@
   tasks:
     - name: List matching leftover libvirt volumes
       ansible.builtin.shell: |
+        set -o pipefail
         virsh -c {{ lvm__libvirt_uri | quote }} vol-list {{ lvm__libvirt_pool | quote }} | awk '{print $1}' | \
           grep -E '{{ lvm__instance_names | join("|") }}' || true
+      args:
+        executable: /bin/bash
       register: lvm__leftover_volumes
       changed_when: false
 
