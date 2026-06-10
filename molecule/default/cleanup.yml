@@ -13,6 +13,7 @@
     lvm__instance_names:
       - test-lvm-ubuntu2204
       - test-lvm-ubuntu2404
+      - test-lvm-ubuntu2604
       - test-lvm-fedora42
       - test-lvm-fedora43
       - test-lvm-fedora44

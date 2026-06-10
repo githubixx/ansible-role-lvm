@@ -34,6 +34,17 @@ platforms:
         network_name: private_network
         type: static
         ip: 172.16.10.20
+  - name: test-lvm-ubuntu2604
+    box: githubixx/ubuntu-26.04
+    memory: 1536
+    cpus: 2
+    provider_raw_config_args:
+      - "storage :file, :type => 'qcow2', :device => 'vdb', :size => '1G'"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: static
+        ip: 172.16.10.25
   - name: test-lvm-fedora42
     box: githubixx/fedora-42
     memory: 1536

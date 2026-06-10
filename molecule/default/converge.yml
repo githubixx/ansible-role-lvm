@@ -27,6 +27,18 @@
         name: githubixx.lvm
 
 - name: Include LVM role
+  hosts: test-lvm-ubuntu2604
+  vars_files:
+    - vars/test-lvm-minimal.yml
+  remote_user: vagrant
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Include LVM role
+      ansible.builtin.include_role:
+        name: githubixx.lvm
+
+- name: Include LVM role
   hosts: test-lvm-fedora42
   vars_files:
     - vars/test-lvm-minimal.yml
