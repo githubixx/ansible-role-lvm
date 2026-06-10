@@ -3,19 +3,20 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: (Debian compatible OS) Install required packages
-  ansible.builtin.package:
-    name: "{{ packages_debian }}"
+  ansible.builtin.apt:
+    name:
+      - lvm2
+      - util-linux
     state: present
-  loop:
-    - lvm2
-    - util-linux
-  loop_control:
-    loop_var: packages_debian
+    update_cache: true
+    cache_valid_time: 3600
 
 - name: (Debian compatible OS) Install additional packages
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name: "{{ packages_debian }}"
     state: present
+    update_cache: true
+    cache_valid_time: 3600
   loop: "{{ additional_packages_debian }}"
   loop_control:
     loop_var: packages_debian
