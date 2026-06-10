@@ -12,8 +12,8 @@ driver:
     type: libvirt
 
 platforms:
-  - name: test-lvm-ubuntu2004
-    box: generic/ubuntu2004
+  - name: test-lvm-ubuntu2404
+    box: githubixx/ubuntu-24.04
     memory: 1536
     cpus: 2
     provider_raw_config_args:
@@ -40,7 +40,11 @@ scenario:
   test_sequence:
     - prepare
     - converge
+    - verify
+  destroy_sequence:
+    - destroy
+    - cleanup
 
 verifier:
   name: ansible
-  enabled: false
+  enabled: true

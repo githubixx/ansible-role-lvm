@@ -1,0 +1,29 @@
+---
+# Copyright (C) 2021-2026 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Remove leftover libvirt volumes
+  hosts: localhost
+  connection: local
+  become: true
+  gather_facts: false
+  vars:
+    lvm__libvirt_uri: qemu:///system
+    lvm__libvirt_pool: default
+    lvm__instance_names:
+      - test-lvm-ubuntu2404
+  tasks:
+    - name: List matching leftover libvirt volumes
+      ansible.builtin.shell: |
+        virsh -c {{ lvm__libvirt_uri | quote }} vol-list {{ lvm__libvirt_pool | quote }} | awk '{print $1}' | \
+          grep -E '{{ lvm__instance_names | join("|") }}' || true
+      register: lvm__leftover_volumes
+      changed_when: false
+
+    - name: Delete leftover libvirt volumes
+      ansible.builtin.command:
+        cmd: >-
+          virsh -c {{ lvm__libvirt_uri }} vol-delete {{ item }} {{ lvm__libvirt_pool }}
+      loop: "{{ lvm__leftover_volumes.stdout_lines }}"
+      when: lvm__leftover_volumes.stdout_lines | length > 0
+      changed_when: true

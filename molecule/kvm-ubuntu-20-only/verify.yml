@@ -1,0 +1,66 @@
+---
+# Copyright (C) 2021-2026 Robert Wimmer
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Verify lifecycle scenario final deletion state
+  hosts: test-lvm-ubuntu2404
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check final volume group state
+      ansible.builtin.command:
+        cmd: vgs --noheadings -o vg_name
+      register: lvm__ubuntu_delete_vgs
+      changed_when: false
+
+    - name: Check final logical volume state
+      ansible.builtin.command:
+        cmd: lvs --noheadings -o vg_name,lv_name
+      register: lvm__ubuntu_delete_lvs
+      changed_when: false
+
+    - name: Check removed devices have no filesystem signature
+      ansible.builtin.command:
+        cmd: blkid {{ item }}
+      loop:
+        - /dev/test-vg-02/test-lv-02
+        - /dev/test-vg-03/test-lv-03
+        - /dev/test-vg-04/test-lv-04
+      register: lvm__ubuntu_delete_blkid
+      changed_when: false
+      failed_when: false
+
+    - name: Ensure deleted mount is absent
+      ansible.builtin.command:
+        cmd: findmnt -no source,target,fstype /mnt1
+      register: lvm__ubuntu_delete_mount
+      changed_when: false
+      failed_when: false
+
+    - name: Gather deleted mountpoint directory status
+      ansible.builtin.stat:
+        path: /mnt1
+      register: lvm__ubuntu_delete_mountpoint
+
+    - name: Read fstab after deletion
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: lvm__ubuntu_delete_fstab
+
+    - name: Ensure lifecycle scenario final state matches expectations
+      ansible.builtin.assert:
+        that:
+          - "'test-vg-01' not in lvm__ubuntu_delete_vgs.stdout"
+          - "'test-vg-02' not in lvm__ubuntu_delete_vgs.stdout"
+          - "'test-vg-03' not in lvm__ubuntu_delete_vgs.stdout"
+          - "'test-vg-04' not in lvm__ubuntu_delete_vgs.stdout"
+          - "'test-vg-02 test-lv-02' not in lvm__ubuntu_delete_lvs.stdout"
+          - "'test-vg-03 test-lv-03' not in lvm__ubuntu_delete_lvs.stdout"
+          - "'test-vg-04 test-lv-04' not in lvm__ubuntu_delete_lvs.stdout"
+          - lvm__ubuntu_delete_blkid.results[0].rc != 0
+          - lvm__ubuntu_delete_blkid.results[1].rc != 0
+          - lvm__ubuntu_delete_blkid.results[2].rc != 0
+          - lvm__ubuntu_delete_mount.rc != 0
+          - lvm__ubuntu_delete_mountpoint.stat.exists
+          - lvm__ubuntu_delete_mountpoint.stat.isdir
+          - (lvm__ubuntu_delete_fstab.content | b64decode) is search('(?m)^\S+\s+/mnt1\s+ext4\s+')

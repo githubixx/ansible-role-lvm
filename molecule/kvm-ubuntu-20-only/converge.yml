@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Include LVM role
-  hosts: test-lvm-ubuntu2004
+  hosts: test-lvm-ubuntu2404
   vars_files:
-    - vars/test-lvm-ubuntu2004_create.yml
+    - vars/test-lvm-ubuntu2404_create.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -15,9 +15,9 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-ubuntu2004
+  hosts: test-lvm-ubuntu2404
   vars_files:
-    - vars/test-lvm-ubuntu2004_delete.yml
+    - vars/test-lvm-ubuntu2404_delete.yml
   remote_user: vagrant
   become: true
   gather_facts: true
