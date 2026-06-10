@@ -1,5 +1,5 @@
 ---
-# Copyright (C) 2021-2024 Robert Wimmer
+# Copyright (C) 2021-2026 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Prepare Archlinux
@@ -27,14 +27,24 @@
         executable: /bin/bash
       changed_when: false
 
-- name: Prepare Ubuntu
+- name: Prepare Debian-family systems
   hosts: all
   remote_user: vagrant
   become: true
   gather_facts: true
   tasks:
-    - name: (Ubuntu) Update APT package cache
-      when: ansible_distribution | lower == 'ubuntu'
+    - name: (Debian-family) Update APT package cache
+      when: ansible_facts['os_family'] | lower == 'debian'
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 3600
+
+    - name: (RedHat-family) Update package cache
+      when: ansible_facts['os_family'] | lower == 'redhat'
+      ansible.builtin.command: "{{ ansible_facts['pkg_mgr'] }} -y makecache"
+      changed_when: false
+
+    - name: (SuSE-family) Update package cache
+      when: ansible_facts['os_family'] | lower == 'suse'
+      ansible.builtin.command: zypper --gpg-auto-import-keys refresh
+      changed_when: false

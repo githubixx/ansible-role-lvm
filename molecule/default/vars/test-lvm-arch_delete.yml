@@ -1,11 +1,11 @@
 ---
-# Copyright (C) 2021-2024 Robert Wimmer
+# Copyright (C) 2021-2026 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 lvm_vgs:
   - vgname: vg01
     pvs: /dev/vdb
-    pesize: 2M
+    pesize: 128K
     state: present
     lvm_lvs:
       - lvname: vg01lv01
@@ -20,26 +20,31 @@ lvm_vgs:
               name: /vg01lv01
       - lvname: vg01lv02
         size: 10%VG
-        state: present
+        state: absent
+        force: true
         fs:
           type: ext4
-          state: present
+          state: absent
+          force: true
           mountpoint:
-            state: mounted
+            state: absent
             path:
               name: /vg01lv02
   - vgname: vg02
     pvs: /dev/vdc
     pesize: 512K
-    state: present
+    state: absent
+    force: true
     lvm_lvs:
       - lvname: vg02lv01
         size: 10%VG
-        state: present
+        state: absent
+        force: true
         fs:
           type: ext4
-          state: present
+          state: absent
+          force: true
           mountpoint:
-            state: mounted
+            state: absent
             path:
               name: /vg02lv01

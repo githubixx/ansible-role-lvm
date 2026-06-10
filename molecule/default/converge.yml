@@ -1,5 +1,5 @@
 ---
-# Copyright (C) 2021-2024 Robert Wimmer
+# Copyright (C) 2021-2026 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Include LVM role
@@ -15,9 +15,9 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-ubuntu2004
+  hosts: test-lvm-ubuntu2404
   vars_files:
-    - vars/test-lvm-ubuntu2004_create.yml
+    - vars/test-lvm-ubuntu2404_create.yml
   remote_user: vagrant
   become: true
   gather_facts: true
@@ -27,19 +27,7 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-fedora39
-  vars_files:
-    - vars/test-lvm-minimal.yml
-  remote_user: vagrant
-  become: true
-  gather_facts: true
-  tasks:
-    - name: Include LVM role
-      ansible.builtin.include_role:
-        name: githubixx.lvm
-
-- name: Include LVM role
-  hosts: test-lvm-fedora36
+  hosts: test-lvm-ubuntu2604
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant
@@ -51,7 +39,31 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-centos7
+  hosts: test-lvm-fedora42
+  vars_files:
+    - vars/test-lvm-minimal.yml
+  remote_user: vagrant
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Include LVM role
+      ansible.builtin.include_role:
+        name: githubixx.lvm
+
+- name: Include LVM role
+  hosts: test-lvm-fedora43
+  vars_files:
+    - vars/test-lvm-minimal.yml
+  remote_user: vagrant
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Include LVM role
+      ansible.builtin.include_role:
+        name: githubixx.lvm
+
+- name: Include LVM role
+  hosts: test-lvm-fedora44
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant
@@ -87,7 +99,7 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-opensuse-leap-15-4
+  hosts: test-lvm-opensuse-leap-15-6
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant
@@ -99,7 +111,7 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-opensuse-leap-15-5
+  hosts: test-lvm-opensuse-leap-16-0
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant
@@ -111,7 +123,7 @@
         name: githubixx.lvm
 
 - name: Include LVM role
-  hosts: test-lvm-debian11
+  hosts: test-lvm-debian13
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant
@@ -134,8 +146,8 @@
       ansible.builtin.include_role:
         name: githubixx.lvm
 
-- name: Include LVM role Rocky Linux 8
-  hosts: test-lvm-rocky8
+- name: Include LVM role Rocky Linux 10
+  hosts: test-lvm-rocky10
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant
@@ -158,8 +170,8 @@
       ansible.builtin.include_role:
         name: githubixx.lvm
 
-- name: Include LVM role Almalinux 8
-  hosts: test-lvm-alma8
+- name: Include LVM role Almalinux 10
+  hosts: test-lvm-alma10
   vars_files:
     - vars/test-lvm-minimal.yml
   remote_user: vagrant

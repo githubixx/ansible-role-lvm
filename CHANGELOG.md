@@ -1,9 +1,28 @@
 <!--
-Copyright (C) 2021-2024 Robert Wimmer
+Copyright (C) 2021-2026 Robert Wimmer
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 # Changelog
+
+## 0.5.0
+
+- remove support for Ubuntu 20.04
+- remove support for EL 7/8
+- remove support for Fedora 39
+- remove support for openSUSE Leap 15.4/15.5
+- add support for Ubuntu 24.04
+- add support for Ubuntu 26.04
+- add support for Debian 13
+- add support for EL 10
+- add support for Fedora 42/43/44
+- add support for openSUSE Leap 15.6/16.0
+- update Github release workflow
+- Molecule: rename `kvm` scenario to `default`
+- Molecule: update Vagrant boxes and platform matrix
+- Molecule: add `verify.yml` coverage
+- Molecule: add cleanup for leftover libvirt volumes
+- Molecule: fix ansible-lint issues
 
 ## 0.4.0
 
